@@ -1,6 +1,9 @@
 const { response } = require('express');
 const { update } = require('../model/UserModel');
 const UserModel = require('../model/UserModel');
+// const  {hashPassword} = require('../helpers/auth')
+const {hash} = require('bcryptjs')
+
 const {
     startOfDay, 
     endOfDay, 
@@ -18,16 +21,61 @@ const current = new Date();
 class UserController {
     
     async create(req, res){
-        const user = new UserModel(req.body);
-        await user
-                .save()
-                .then(response=> {
-                    return res.status(200).json(response);
+        try {
+            const {name, email,  password}= req.body
+
+            //comment if return error code 
+            if(!name){
+                return res.json({
+                    error: "Name is required", 
                 })
-                .catch(error => {
-                    return res.status(500).json(error);
-                });
+            }
+            //
+            if(!password || password.length < 6) {
+                return res.json({
+                    error: "Password is required and should be 6 characters long"
+                })
+            }
+            //end comment
+            
+            
+            console.log(email)
+            const exist = await UserModel.find({email})
+            
+            console.log('type', typeof(exist))
+
+            for (var o in exist)
+                console.log('teste')
+                if(exist[o]){
+                    return res.json({error: "email is taken"})
+                }
+            
+            const passwordHash = await hash(password, 8)
+            try{
+                const user = await new UserModel({
+                    name,
+                    email,
+                    password:passwordHash
+
+                }).save()
+                return res.json(user)
+
+            }catch(err){
+                console.log(err)
+            }
+            res.json({
+                data: "Esse é /register endpoint"
+            }) 
+        }catch(err){
+            console.log(err)
+        }
+        
+        
     }
+
+
+       
+    
 
     async update(req, res){
         await TaskModel.findByIdAndUpdate({'_id': req.params.id}, req.body, {new:true})

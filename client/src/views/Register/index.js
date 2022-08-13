@@ -2,15 +2,9 @@ import React, {useState} from 'react';
 import InputForm from '../../components/InputForm'
 import ButtonForm from '../../components/ButtonForm'
 import { toast } from 'react-hot-toast';
+
 import api from '../../services/api';
-
-
-import {
-    Input,
-    Label,
-    
-  } from 'reactstrap';
-
+//import axios from 'axios'
 
 
 function Register(label) {
@@ -21,25 +15,48 @@ function Register(label) {
     
 
     async function handleClickRegister(e){
-        
-        //console.log(name, email, password)
-        try {
+        try{
             e.preventDefault()
-            await api.post('/register',{
+            const {data} = await api.post('/register',{
                 name,
                 email, 
                 password
-        
-            })
-            toast.success('Successfully toasted!')
-            
-            
-
+                
+            }) 
+            console.log(data)
+            if(data.error){
+                console.log('ok',data.error)
+                toast.error(data.error)
+            } else {
+                toast.success("Registration successful. Please login")
+            }
         }catch(err){
             console.log(err)
-            toast.error("teste")
+            toast.error("Something went wrong. Try again")
         }
     }
+
+    // const TESTESSS = async(e) => {
+    //     try {
+    //         e.preventDefault()
+    //         const {data} = await axios.post('http://localhost:8000/register',{
+    //             name,
+    //             email,
+    //             password
+    //         }
+    //         )
+    //         console.log(data)
+    //         toast.success('ok!')
+
+    //     }catch(err){
+    //         console.log(err)
+    //         toast.error("erro!")
+    //     }
+
+    // }
+
+
+
     return (
         
         <div className="d-flex justify-content-center" style={{height:'80vh'}}>

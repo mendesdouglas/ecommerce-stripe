@@ -42,24 +42,7 @@ function Register() {
         }
     }
 
-    // const TESTESSS = async(e) => {
-    //     try {
-    //         e.preventDefault()
-    //         const {data} = await axios.post('http://localhost:8000/register',{
-    //             name,
-    //             email,
-    //             password
-    //         }
-    //         )
-    //         console.log(data)
-    //         toast.success('ok!')
-
-    //     }catch(err){
-    //         console.log(err)
-    //         toast.error("erro!")
-    //     }
-
-    // }
+    
 
 
 

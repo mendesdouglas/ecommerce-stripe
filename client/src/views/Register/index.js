@@ -2,13 +2,15 @@ import React, {useState} from 'react';
 import InputForm from '../../components/InputForm'
 import ButtonForm from '../../components/ButtonForm'
 import { toast } from 'react-hot-toast';
+import {useNavigate} from 'react-router-dom'
 
 import api from '../../services/api';
 //import axios from 'axios'
 
 
-function Register(label) {
+function Register() {
     //label, value, setValue, type = "text"
+    let navigate = useNavigate()
     const [name, setName] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -28,7 +30,11 @@ function Register(label) {
                 console.log('ok',data.error)
                 toast.error(data.error)
             } else {
-                toast.success("Registration successful. Please login")
+                setName("")
+                setEmail("")
+                setPassword("")
+                toast.success(`Hey ${data.user.name}. Welcome to our website`)
+                navigate("/login")
             }
         }catch(err){
             console.log(err)

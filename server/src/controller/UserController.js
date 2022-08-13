@@ -43,13 +43,13 @@ class UserController {
             const exist = await UserModel.find({email})
             
             console.log('type', typeof(exist))
-
+            //verify if obj exist contains elements if true throw a message
             for (var o in exist)
                 console.log('teste')
                 if(exist[o]){
                     return res.json({error: "email is taken"})
                 }
-            
+            //take a password and hash
             const passwordHash = await hash(password, 8)
             try{
                 const user = await new UserModel({
@@ -58,14 +58,17 @@ class UserController {
                     password:passwordHash
 
                 }).save()
-                return res.json(user)
+                const{password, ...rest} = user._doc
+                //console.log('password', password)
+                //console.log('rest', rest)
+                return res.json({
+                    user:rest
+                })
 
             }catch(err){
                 console.log(err)
             }
-            res.json({
-                data: "Esse é /register endpoint"
-            }) 
+            
         }catch(err){
             console.log(err)
         }

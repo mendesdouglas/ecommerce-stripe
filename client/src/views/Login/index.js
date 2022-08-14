@@ -16,14 +16,13 @@ function Login() {
     const [password, setPassword] = useState("")
     
 
-    async function handleClickRegister(e){
+    async function handleClickLogin(e){
         try{
+          console.log(email, password)
             e.preventDefault()
             const {data} = await api.post('/login',{
-                
                 email, 
-                password
-                
+                password,
             }) 
             console.log(data)
             if(data.error){
@@ -34,6 +33,7 @@ function Login() {
                 setEmail("")
                 setPassword("")
                 toast.success(`Hey ${data.user.name}. Welcome to our website`)
+                localStorage.setItem('auth', JSON.stringify(data))
                 navigate("/")
             }
         }catch(err){
@@ -41,10 +41,6 @@ function Login() {
             toast.error("Something went wrong. Try again")
         }
     }
-
-    
-
-
 
     return (
         
@@ -59,7 +55,7 @@ function Login() {
                     <InputForm label="Email" value={email}  setValue={setEmail}/>
                     <InputForm label="Password" value={password} type={'password'} setValue={setPassword}/>
                     <div className="d-grid">
-                        <ButtonForm handleClick={handleClickRegister} type="danger" text="Access" size="lg"/>
+                        <ButtonForm handleClick={handleClickLogin} type="danger" text="Access" size="lg"/>
                     </div>
                 </div>
 

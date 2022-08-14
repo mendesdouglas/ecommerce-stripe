@@ -34,6 +34,7 @@ function Register() {
                 setEmail("")
                 setPassword("")
                 toast.success(`Hey ${data.user.name}. Welcome to our website`)
+                
                 navigate("/login")
             }
         }catch(err){

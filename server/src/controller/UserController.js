@@ -3,6 +3,7 @@ const { update } = require('../model/UserModel');
 const UserModel = require('../model/UserModel');
 // const  {hashPassword} = require('../helpers/auth')
 const {hash} = require('bcryptjs')
+const {sign} = require('jsonwebtoken') 
 
 const {
     startOfDay, 
@@ -58,10 +59,19 @@ class UserController {
                     password:passwordHash
 
                 }).save()
+                const token = sign(
+                    {
+                      _id:user._id,
+                    },
+                    process.env.JWT_SECRET,
+                    {
+                      expiresIn: '30d'
+                    }
+                  )
+
                 const{password, ...rest} = user._doc
-                //console.log('password', password)
-                //console.log('rest', rest)
                 return res.json({
+                    token,
                     user:rest
                 })
 
@@ -76,8 +86,7 @@ class UserController {
         
     }
 
-
-       
+     
     
 
     async update(req, res){

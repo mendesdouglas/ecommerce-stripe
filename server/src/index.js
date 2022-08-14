@@ -12,7 +12,7 @@ server.use(express.json());
 
 
 const UserRoutes = require('./routes/UserRoutes');
-server.use('/register', UserRoutes);
+server.use('/', UserRoutes);
 
 
 //ficar escutando na porta 3333

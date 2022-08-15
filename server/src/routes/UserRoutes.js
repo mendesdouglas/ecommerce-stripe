@@ -3,28 +3,19 @@ const router = express.Router();
 
 const UserController = require('../controller/UserController');
 const LoginUserController = require('../controller/LoginUserController');
-//const TaskValidation = require('../middlewares/TaskValidation');
-//const MacaddressValidation = require('../middlewares/MacaddressValidation');
+
+const SubscriptionController = require('../controller/subscriptions/SubscriptionController')
+
+
 
 
 
 router.post('/register', UserController.create);
 router.post('/login', LoginUserController.handle);
 
-// router.put('/:id', TaskValidation, TaskController.update);
+router.get('/prices', SubscriptionController.handle);
 
-// router.get('/:id', TaskController.show);
 
-// router.delete('/:id', TaskController.delete);
-// router.put('/:id/:done', TaskController.done);
-
-// router.get('/filter/all/:macaddress', TaskController.all);
-// router.get('/filter/today/:macaddress', TaskController.today);
-// router.get('/filter/week/:macaddress',  TaskController.week);
-// router.get('/filter/month/:macaddress',  TaskController.month);
-// router.get('/filter/year/:macaddress',  TaskController.year);
-
-// router.get('/filter/late/:macaddress',  TaskController.late);
 
 
 module.exports = router;

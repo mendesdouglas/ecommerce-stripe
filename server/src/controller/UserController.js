@@ -87,17 +87,6 @@ class UserController {
         
         
     }
-
-     
-    
-
-
-
-
-
-
-
-   
   
 }
 

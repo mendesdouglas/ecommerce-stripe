@@ -1,8 +1,9 @@
-import React, {useState} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import InputForm from '../../components/InputForm'
 import ButtonForm from '../../components/ButtonForm'
 import { toast } from 'react-hot-toast';
 import {useNavigate} from 'react-router-dom'
+import { UserContext } from '../../context';
 
 import api from '../../services/api';
 //import axios from 'axios'
@@ -11,10 +12,15 @@ import api from '../../services/api';
 function Login() {
     //label, value, setValue, type = "text"
     let navigate = useNavigate()
-    
+
+    const [context, setContext] = useContext(UserContext)    
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     
+
+    useEffect(() => {  
+
+    }, [])
 
     async function handleClickLogin(e){
         try{
@@ -29,9 +35,12 @@ function Login() {
                 console.log('ok',data.error)
                 toast.error(data.error)
             } else {
-                
                 setEmail("")
                 setPassword("")
+                //console.log('teste', typeof(data))
+                //console.log('usercontext', data)
+                //setContext(data)
+                //console.log('teste state', context)
                 toast.success(`Hey ${data.user.name}. Welcome to our website`)
                 localStorage.setItem('auth', JSON.stringify(data))
                 navigate("/")

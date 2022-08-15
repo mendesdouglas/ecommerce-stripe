@@ -1,36 +1,32 @@
 
-import React, { useState, Fragment } from 'react';
+import React, { useState, Fragment, useContext } from 'react';
 import Logo from '../../logo.svg'
 import { isAuth } from '../../utils/isAuth';
 import {useNavigate} from 'react-router-dom'
+import { UserContext } from '../../context';
 
 import {
-    Collapse,
-    Navbar,
-    NavbarToggler,
-    
+    Navbar,    
     Nav,
     NavbarBrand,
     NavItem,
     NavLink,
-    UncontrolledDropdown,
-    DropdownToggle,
-    DropdownMenu,
-    DropdownItem,
-    NavbarText,
-    Row
+   
   } from 'reactstrap';
 
 function NavBar(args) {
     const [isOpen, setIsOpen] = useState(true);
+    const [state, setState] = useContext(UserContext)
+
     const toggle = () => setIsOpen(!isOpen);
     let navigate = useNavigate()
 
   const logout =() =>{
     localStorage.removeItem('auth')
     navigate("/login")
-
   }
+
+  console.log('STATE =>', state)
   return (
     <Fragment>
       <Navbar className='border'>

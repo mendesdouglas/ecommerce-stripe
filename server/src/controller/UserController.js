@@ -3,19 +3,20 @@ const { update } = require('../model/UserModel');
 const UserModel = require('../model/UserModel');
 // const  {hashPassword} = require('../helpers/auth')
 const {hash} = require('bcryptjs')
-const {sign} = require('jsonwebtoken') 
+const {sign} = require('jsonwebtoken')
+const stripe = require("stripe")(process.env.STRIPE_SECRET_KEY)
 
-const {
-    startOfDay, 
-    endOfDay, 
-    startOfWeek, 
-    endOfWeek, 
-    startOfMonth, 
-    endOfMonth, 
-    startOfYear, 
-    endOfYear
+// const {
+//     startOfDay, 
+//     endOfDay, 
+//     startOfWeek, 
+//     endOfWeek, 
+//     startOfMonth, 
+//     endOfMonth, 
+//     startOfYear, 
+//     endOfYear
 
-}= require('date-fns');
+// }= require('date-fns');
 
 const current = new Date();
 
@@ -52,13 +53,19 @@ class UserController {
                 }
             //take a password and hash
             const passwordHash = await hash(password, 8)
-
+            
             //create account in stripe
+            const customer = await stripe.customers.create({
+                email,
+            })
+            
+            console.log('stripe customer create on signup', customer)
             try{
                 const user = await new UserModel({
                     name,
                     email,
-                    password:passwordHash
+                    password:passwordHash,
+                    stripe_customer_id: customer.id
 
                 }).save()
                 const token = sign(
